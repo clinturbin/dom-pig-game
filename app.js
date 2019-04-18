@@ -1,20 +1,47 @@
 let scores, roundScore, activePlayer, winningScore;
 
-scores = [0, 0];
-roundScore = 0;
-activePlayer = 0;
 winningScore = 20;
 
-document.getElementById('score-0').textContent = '0';
-document.getElementById('score-1').textContent = '0';
+let resetGame = () => {
+    scores = [0, 0];
+    roundScore = 0;
+    activePlayer = 0;
+    hideDice();
+    clearGlobalScore();
+    clearCurrentScore();
+    resetPlayerNames();
+    removeWinnerClass();
+    resetActivePlayer();
+};
 
 let hideDice = () => {
     document.querySelector('.dice').style.display = 'none';
 };
 
+let clearGlobalScore = () => {
+    document.getElementById('score-0').textContent = '0';
+    document.getElementById('score-1').textContent = '0';
+};
+
+let resetPlayerNames = () => {
+    document.getElementById('name-0').textContent = 'Player 1';
+    document.getElementById('name-1').textContent = 'Player 2';
+};
+
 let clearCurrentScore = () => {
     document.getElementById('current-0').textContent = '0';
     document.getElementById('current-1').textContent = '0';
+};
+
+let removeWinnerClass = () => {
+    document.querySelector('.player-0-panel').classList.remove('winner');
+    document.querySelector('.player-1-panel').classList.remove('winner');
+};
+
+let resetActivePlayer = () => {
+    document.querySelector('.player-0-panel').classList.remove('active');
+    document.querySelector('.player-1-panel').classList.remove('active');
+    document.querySelector('.player-0-panel').classList.add('active');
 };
 
 let switchPlayer = () => {
@@ -67,5 +94,8 @@ document.querySelector('.btn-hold').addEventListener('click', () => {
     }
 });
 
+document.querySelector('.btn-new').addEventListener('click', resetGame);
+
+resetGame();
 hideDice();
 clearCurrentScore();
