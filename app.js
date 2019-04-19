@@ -1,11 +1,13 @@
-let scores, roundScore, activePlayer, winningScore;
+let scores, roundScore, activePlayer, winningScore, gamePlaying;
 
 winningScore = 20;
+gamePlaying = true;
 
 let resetGame = () => {
     scores = [0, 0];
     roundScore = 0;
     activePlayer = 0;
+    gamePlaying = true;
     hideDice();
     clearGlobalScore();
     clearCurrentScore();
@@ -56,41 +58,46 @@ let switchPlayer = () => {
 };
 
 document.querySelector('.btn-roll').addEventListener('click', () => {
-    // 1. Random number
-    let dice = Math.floor(Math.random() * 6) + 1;
-    
-    // 2. Display the result
-    let diceDOM = document.querySelector('.dice')
-    diceDOM.style.display = 'block';
-    diceDOM.src = 'assets/dice-' + dice + '.png';
-    
-    // 3. Update the round score IF the rolled number was NOT a 1
-    if (dice !== 1) {
-        // Add score
-        roundScore += dice;
-        document.querySelector('#current-' + activePlayer).textContent = roundScore;
-    } else {
-        // Next player
-        switchPlayer();
+    if (gamePlaying) {
+        // 1. Random number
+        let dice = Math.floor(Math.random() * 6) + 1;
+        
+        // 2. Display the result
+        let diceDOM = document.querySelector('.dice')
+        diceDOM.style.display = 'block';
+        diceDOM.src = 'assets/dice-' + dice + '.png';
+        
+        // 3. Update the round score IF the rolled number was NOT a 1
+        if (dice !== 1) {
+            // Add score
+            roundScore += dice;
+            document.querySelector('#current-' + activePlayer).textContent = roundScore;
+        } else {
+            // Next player
+            switchPlayer();
+        }
     }
 });
 
 document.querySelector('.btn-hold').addEventListener('click', () => {
-    // 1. Add current score to users global score
-    scores[activePlayer] += roundScore;
+    if (gamePlaying) {
+        // 1. Add current score to users global score
+        scores[activePlayer] += roundScore;
 
-    // 2. Update the User Interface
-    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-    
-    // 3. Check if player won the game
-    if(scores[activePlayer] >= winningScore) {
-        document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
-        hideDice();
-        document.querySelector(`.player-${activePlayer}-panel`).classList.add('winner');
-        document.querySelector(`.player-${activePlayer}-panel`).classList.remove('active');
-    } else {
-        // Switch Player
-        switchPlayer();
+        // 2. Update the User Interface
+        document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+        
+        // 3. Check if player won the game
+        if(scores[activePlayer] >= winningScore) {
+            document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
+            hideDice();
+            document.querySelector(`.player-${activePlayer}-panel`).classList.add('winner');
+            document.querySelector(`.player-${activePlayer}-panel`).classList.remove('active');
+            gamePlaying = false;
+        } else {
+            // Switch Player
+            switchPlayer();
+        }
     }
 });
 
