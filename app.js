@@ -1,4 +1,4 @@
-let scores, roundScore, activePlayer, winningScore, gamePlaying;
+let scores, roundScore, activePlayer, winningScore, gamePlaying, lastDice;
 
 winningScore = 20;
 gamePlaying = true;
@@ -76,6 +76,7 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
             // Next player
             switchPlayer();
         }
+        lastDice = dice;
     }
 });
 
