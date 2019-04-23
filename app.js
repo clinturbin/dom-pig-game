@@ -16,7 +16,8 @@ let resetGame = () => {
 };
 
 let hideDice = () => {
-    document.querySelector('.dice').style.display = 'none';
+    document.getElementById('dice-1').style.display = 'none';
+    document.getElementById('dice-2').style.display = 'none';
 };
 
 let clearGlobalScore = () => {
@@ -53,21 +54,31 @@ let switchPlayer = () => {
     document.querySelector('.player-0-panel').classList.toggle('active');
     document.querySelector('.player-1-panel').classList.toggle('active');
 
-    document.querySelector('.dice').style.display = 'none';
+    hideDice();
 };
 
 document.querySelector('.btn-roll').addEventListener('click', () => {
     if (gamePlaying) {
         // 1. Random number
-        let dice = Math.floor(Math.random() * 6) + 1;
+        let dice1 = Math.floor(Math.random() * 6) + 1;
+        let dice2 = Math.floor(Math.random() * 6) + 1;
         
         // 2. Display the result
-        let diceDOM = document.querySelector('.dice')
-        diceDOM.style.display = 'block';
-        diceDOM.src = 'assets/dice-' + dice + '.png';
+        document.getElementById('dice-1').style.display = 'block';
+        document.getElementById('dice-2').style.display = 'block';
+        document.getElementById('dice-1').src = 'assets/dice-' + dice1 + '.png';
+        document.getElementById('dice-2').src = 'assets/dice-' + dice2 + '.png';
         
         // 3. Update the round score IF the rolled number was NOT a 1
-        if (dice === 6 && lastDice === 6) {
+        if (dice1 !== 1 && dice2 !== 1) {
+            // Add score
+            roundScore += dice1 + dice2;
+            document.querySelector('#current-' + activePlayer).textContent = roundScore;
+        } else {
+            // Next Player
+            switchPlayer();
+        }
+        /*if (dice === 6 && lastDice === 6) {
             // Player loses score
             scores[activePlayer] = 0;
             document.querySelector('#score-' + activePlayer).textContent = '0';
@@ -81,6 +92,7 @@ document.querySelector('.btn-roll').addEventListener('click', () => {
             switchPlayer();
         }
         lastDice = dice;
+        */
     }
 });
 
